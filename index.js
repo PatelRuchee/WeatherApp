@@ -25,7 +25,9 @@ router.post("/", function (req, res, next) {
     requestedcityfinal = requestedcity;
   }
   else{
+
     console.log("Sorry, the city is not avaliable");
+    res.status(401).send({success: false, error: {message: "city not found"}}); 
 
   }
 
@@ -38,6 +40,31 @@ router.post("/", function (req, res, next) {
       console.log("got weather data");
       console.log(res2.data);
       x = res2;
+      MongoClient.connect('mongodb+srv://ryerson:123456a@cluster0.sqfnr.mongodb.net/mydb?retryWrites=true&w=majority', function (err, client) {
+        if (err) throw err
+        var db=client.db('mydb');
+        var weatherdata = {
+          City: requestedcity,
+          CurrentTemp: res2.data.main.temp,
+          Longitude: res2.data.coord.lon,
+          Latitude: res2.data.coord.lat,
+          Overview: res2.data.weather[0].main,
+          Description: res2.data.weather[0].description,
+          Feellike: res2.data.main.feels_like,
+          MinTemp: res2.data.main.temp_min,
+          MaxTemp: res2.data.main.temp_max,
+          Humidity: res2.data.main.humidity,
+          Pressure: res2.data.main.pressure,
+          WindSpeed: res2.data.wind.speed,
+          WindGust: res2.data.wind.gust
+        }
+        db.collection('weatherdata').insertOne(weatherdata, (err, formres) => {
+          if (err) {
+              console.log(err);
+          }
+          
+      })
+    })
       res.status(200).send(res2.data);
       // console.log(typeof(JSON.stringify(x)));
       // x = JSON.stringify(res2.data);
@@ -78,7 +105,7 @@ router.post("/login", function (req, res, next) {
       });
     } else {
       console.log("Credentials wrong");
-      res.status(401); 
+      res.status(401).send({success: false, error: {message: "incorrect credentials"}}); 
     }
 })
 })

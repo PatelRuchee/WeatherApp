@@ -1,107 +1,126 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {box-sizing: border-box;}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-.topnav {
-  overflow: hidden;
-  background-color: #f0e9e9;
-}
+        .login {
+            overflow: hidden;
+            background-color: #f0e9e9;
+        }
 
-.topnav a {
-  float: left;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
+        .login a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
 
-.topnav a:hover {
-  background-color: rgb(221, 221, 221);
-  color: black;
-}
+        .login a:hover {
+            background-color: rgb(221, 221, 221);
+            color: black;
+        }
 
-.topnav .search-container {
-  float: right;
-}
+        .login .search-container {
+            float: right;
+        }
 
-.topnav input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-}
+        .login input[type=text] {
+            padding: 6px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: none;
+        }
 
-.topnav .search-container button {
-  float: right;
-  padding: 10px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: rgb(238, 243, 237);
-  font-size: 17px;
-  border: black;
-  cursor: pointer;
-}
+        .login .search-container button {
+            float: right;
+            padding: 10px;
+            margin-top: 8px;
+            margin-right: 16px;
+            background: rgb(238, 243, 237);
+            font-size: 17px;
+            border: black;
+            cursor: pointer;
+        }
 
-.topnav .search-container button:hover {
-  background: rgb(243, 240, 240);
-}
+        .login .search-container button:hover {
+            background: rgb(243, 240, 240);
+        }
 
-@media screen and (max-width: 600px) {
-  .topnav .search-container {
-    float: none;
-  }
-  .topnav a, .topnav input[type=text], .topnav .search-container button {
-    float: none;
-    display: block;
-    text-align: left;
-    width: 100%;
-    margin: 0;
-    padding: 18px;
-  }
-  .topnav input[type=text] {
-    border: 1px solid rgb(240, 225, 225);  
-  }
-}
-</style>
+        @media screen and (max-width: 600px) {
+            .login .search-container {
+                float: none;
+            }
+
+            .login a,
+            .login input[type=text],
+            .login .search-container button {
+                float: none;
+                display: block;
+                text-align: left;
+                width: 100%;
+                margin: 0;
+                padding: 18px;
+            }
+
+            .login input[type=text] {
+                border: 1px solid rgb(240, 225, 225);
+            }
+        }
+    </style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <body>
 
-    <div class="topnav">
+    <div class="login">
         <div class="search-container">
-            <input class= "email" type="text" placeholder="Email" name="email">
-            <input class= "password" type="text" placeholder="Password" name="password">
-            <button id = "login">Login</button>
+            <input class="email" type="text" placeholder="Email" name="email">
+            <input class="password" type="text" placeholder="Password" name="password">
+            <button id="login">Login</button>
         </div>
     </div>
-    <div class= "output">
+    <div class="output">
     </div>
 
 
 
-    <p id="lblResponse"></p>
+    <!-- <div id="lblResponse">
+        <label>longitude</label>
+    </div>
+    <div id="lblResponse1">
+        <label>latitude</label>
+    </div> -->
+
 
 
     <script type="text/javascript">
         $(document).ready(function () {
             $("#login").click(function () {
-                var userinput= {"email": $('.email').val(), "password": $('.password').val()};
-                userinput=JSON.stringify(userinput);
+                var userinput = { "email": $('.email').val(), "password": $('.password').val() };
+                userinput = JSON.stringify(userinput);
                 $.ajax({
                     url: 'http://localhost:3000/login',
                     // dataType: "jsonp",
                     data: userinput,
+                    // statusCode:{
+                    //     401: function(response){
+                    //         alert("Wrong Credentials, Try Again!!");
+
+                    //     }
+                    // },
                     type: 'POST',
                     contentType: "application/json",
                     // jsonpCallback: 'callback', // this is not relevant to the POST anymore
@@ -113,41 +132,37 @@ body {
                         console.log(data.status);
                         if (data.status == 200) {
                             $('.output').html(data.responseText);
+                            $(".login").hide();
                         }
-                        
+
                         // $('#lblResponse').html(JSON.stringify(weather));
                         // console.log('Success: ')
                     },
                     error: function (xhr, status, error) {
                         console.log('Error: ' + error.message);
-                        $('#lblResponse').html('Error connecting to the server.');
+                        alert("Wrong Credentials, Try Again!!");
                     },
+                    // complete: function (xhr, status, error) {
+                    //     console.log("Wrong password");
+                    //     alert("wrong password");
+                    // }
                 });
             });
             $("#weather").click(function () {
-                var cityinput= {"city": $('.city').val()};
-                cityinput=JSON.stringify(cityinput);
+                var cityinput = { "city": $('.city').val() };
+                cityinput = JSON.stringify(cityinput);
                 $.ajax({
                     url: 'http://localhost:3000',
-                    // dataType: "jsonp",
                     data: cityinput,
                     type: 'POST',
                     contentType: "application/json",
-                    // jsonpCallback: 'callback', // this is not relevant to the POST anymore
                     success: function (err, req, data) {
                         console.log($('.city').val());
                         console.log('Success');
-                        var weather = JSON.parse(data.responseText);
-                        // console.log(JSON.stringify(data.responseText));
-                        console.log(weather.coord);
-                        // alert(data);
-                        // var ret = jQuery.parseJSON(data);
-                        $('#lblResponse').html(JSON.stringify(weather.main.temp));
-                        console.log('Success: ')
                     },
                     error: function (xhr, status, error) {
                         console.log('Error: ' + error.message);
-                        $('#lblResponse').html('Error connecting to the server.');
+                        alert("City Not Found, Try Again!!");
                     },
                 });
             });

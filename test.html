@@ -6,7 +6,7 @@
 * {box-sizing: border-box;}
 
 body {
-  margin: 0;
+  margin: 20px;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -73,6 +73,120 @@ body {
   }
 }
 </style>
+<style>
+#city{
+  font-size: 70px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: center;         
+}
+
+#longitude{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: right;         
+}
+
+#latitude{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: right;         
+}
+
+#overview{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: left;         
+}
+
+#description{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: left;         
+}
+
+#temperature{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: center;         
+}
+
+#feellike{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: center;         
+}
+
+#mintemperature{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: center;         
+}
+
+#maxtemperature{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: center;         
+}
+
+#pressure{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: left;         
+}
+
+#humidity{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: left;         
+}
+
+#windspeed{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: right;         
+}
+
+#windgust{
+  font-size: 25px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: right;         
+}
+
+#name{
+  font-size: 15px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: bold;
+  color: rgb(40, 41, 43);
+  text-align: right;         
+}
+
+</style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -87,39 +201,138 @@ body {
 
     <p id="lblResponse"></p>
 
+    <div id = "weatherdata"></div>
+      <div id = "city">
+        <label></label>
+      </div>
+      <div id="longitude"> 
+        <label>Longitude: </label>
+      </div>
+      <div id="latitude">
+        <label>Latitude: </label>
+      </div>
+      <div id = "overview">         
+        <label>Overview: </label>
+      </div>
+      <div id="description"> 
+        <label>Description: </label>
+      </div>
+      <div id="temperature">
+        <label>Temperature: </label>
+      </div>
+      <div id="feellike">
+        <label>Feels Like: </label>
+      </div>
+      <div id="mintemperature">
+        <label>Minimum Temperature: </label>
+      </div>
+      <div id="maxtemperature">
+        <label>Maximum Temperature: </label>
+      </div>
+      <div id="humidity">
+        <label>Humidity: </label>
+      </div>
+      <div id="pressure">
+        <label>Pressure: </label>
+      </div>
+      <div id="windspeed">
+        <label>Wind Speed: </label>
+      </div>
+      <div id="windgust">
+        <label>Wind Gust: </label>
+      </div>
+
+      <div id = "name">
+        <label> By: Ruchi Patel</label>
+      </div>
+
+    </div>
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+          $("#city").hide();
+          $("#longitude").hide();
+          $("#latitude").hide();
+          $("#overview").hide();
+          $("#description").hide();
+          $("#temperature").hide();
+          $("#feellike").hide();
+          $("#mintemperature").hide();
+          $("#maxtemperature").hide();
+          $("#humidity").hide();
+          $("#pressure").hide();
+          $("#windspeed").hide();
+          $("#windgust").hide();
+          $("#name").hide();
+
             $("#weather").click(function () {
                 var cityinput= {"city": $('.city').val()};
                 cityinput=JSON.stringify(cityinput);
                 $.ajax({
                     url: 'http://localhost:3000',
-                    // dataType: "jsonp",
                     data: cityinput,
                     type: 'POST',
                     contentType: "application/json",
-                    // jsonpCallback: 'callback', // this is not relevant to the POST anymore
                     success: function (err, req, data) {
                         console.log($('.city').val());
                         console.log('Success');
                         var weather = JSON.parse(data.responseText);
-                        // console.log(JSON.stringify(data.responseText));
                         console.log(weather.coord);
-                        // alert(data);
-                        // var ret = jQuery.parseJSON(data);
-                        $('#lblResponse').html(JSON.stringify(weather.main.temp));
-                        console.log('Success: ')
+
+                        var lon= weather.coord.lon;
+                        var lat= weather.coord.lat;
+                        var city= weather.name;
+                        var overview= weather.weather[0].main;
+                        var description= weather.weather[0].description;
+                        var temperature= weather.main.temp;
+                        var feellike= weather.main.feels_like;
+                        var mintemperature= weather.main.temp_min;
+                        var maxtemperature= weather.main.temp_max;
+                        var humidity= weather.main.humidity;
+                        var pressure= weather.main.pressure;
+                        var windspeed= weather.wind.speed;
+                        var windgust= weather.wind.gust;
+
+
+                        $('#city').append(city);
+                        $('#longitude').append(lon);
+                        $('#latitude').append(lat);
+                        $('#overview').append(overview);
+                        $('#description').append(description);
+                        $('#temperature').append(temperature).append(' (Celcius)');
+                        $('#feellike').append(feellike).append(' (Celcius)');
+                        $('#mintemperature').append(mintemperature).append(' (Celcius)');
+                        $('#maxtemperature').append(maxtemperature).append(' (Celcius)');
+                        $('#humidity').append(humidity).append('%');
+                        $('#pressure').append(pressure).append( ' kPa');
+                        $('#windspeed').append(windspeed).append(' km/h');
+                        $('#windgust').append(windgust).append(' km/h');
+
+
+                        $("#city").show();
+                        $("#longitude").show();
+                        $("#latitude").show();
+                        $("#overview").show();
+                        $("#description").show();
+                        $("#temperature").show();
+                        $("#feellike").show();
+                        $("#mintemperature").show();
+                        $("#maxtemperature").show();
+                        $("#humidity").show();
+                        $("#pressure").show();
+                        $("#windspeed").show();
+                        $("#windgust").show();
+                        $("#name").show();
                     },
                     error: function (xhr, status, error) {
                         console.log('Error: ' + error.message);
-                        $('#lblResponse').html('Error connecting to the server.');
+                        alert("City Not Found, Try Again!!");
                     },
                 });
             });
         });
     </script>
-
 </body>
 
 </html>
